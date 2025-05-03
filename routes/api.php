@@ -28,8 +28,9 @@ Route::put('/choices/{id}', [ChoiceAPIController::class, 'updateChoice']);
 
 
 //Story API Routes
-Route::post('/stories/create', [StoryAPIController::class, 'createStory']);
-
-
+Route::get('/stories', [StoryAPIController::class, 'getStories']);
+Route::get('/stories/{id}', [StoryAPIController::class, 'getStory']);
+Route::post('/stories', [StoryAPIController::class, 'createStory']);
+Route::put('/stories/{id}', [StoryAPIController::class, 'updateStory']);
 
 //Game History API Routes

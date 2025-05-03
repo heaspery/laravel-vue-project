@@ -3,31 +3,98 @@
 namespace App\Http\Controllers;
 
 use App\Models\Story;
-use Illuminate\Http\Request;
+use App\Http\Requests\StoryStoreRequest;
+use App\Http\Requests\StoryUpdateRequest;
 
 class StoryAPIController extends Controller
 {
-    public function createStory(Request $request)
+    /**
+     * Récupérer tous les chapitres
+     */
+    public function getStories()
+    {
+        $stories = Story::all();
+        return response()->json($stories, 200);
+ 
+    }
+
+    /**
+     * Récupérer un chapitre par son ID
+     */
+    public function getStory($id)
+    {
+        $story = Story::find($id);
+
+        if (!$story) {
+            return response()->json(['message' => 'Story not found'], 404);
+        }
+
+        return response()->json($story, 200);
+    }
+
+    public function createStory(StoryStoreRequest $request)
     {
         try {
-            // Création de l'histoire avec des données statiques
+            $validated = $request->validated();
+
+            if (!$validated) {
+                return response()->json(['message' => 'Invalid JSON data'], 400);
+            }
+
             $story = Story::create([
-                'title' => 'Chapitre test',
-                'description' => 'Contenu test',
-                'cover_image' => 1,
-                'author' => 'Auteur test'
+                'title' => $validated['title'],
+                'description' => $validated['description'],
+                'cover_image' => $validated['cover_image'],
+                'author' => $validated['author'],
+                
             ]);
-    
+
             return response()->json([
                 'message' => 'Story created successfully',
                 'story' => $story
-            ], 201); // Retourne un statut 201 pour une création réussie
+            ], 200);
+
         } catch (\Exception $e) {
-            // Si une exception est levée, capture-la et retourne un message d'erreur
             return response()->json([
-                'message' => 'Error creating story',
-                'error' => $e->getMessage()  // Affiche l'exception dans la réponse
-            ], 500); // Retourne un statut 500 pour une erreur interne du serveur
+                'message' => 'Wrong data',
+                'error' => $e->getMessage() 
+            ], 422); 
         }
     }
+    public function updateStory(StoryUpdateRequest $request, $id) 
+    {
+        try {
+            $validated = $request->validated();
+    
+            if (!$validated) {
+                return response()->json(['message' => 'Invalid JSON data'], 400);
+            }
+    
+            $story = Story::find($id);
+    
+            if (!$story) {
+                return response()->json(['message' => 'Story not found'], 404);
+            }
+    
+            $story->update(array_filter([
+                'title' => $validated['title'] ?? $story->title,
+                'description' => $validated['description'] ?? $story->description,
+                'author' => $validated['author'] ?? $story->author,
+                'cover_image' => $validated['cover_image'] ?? $story->cover_image,
+            ]));
+    
+            return response()->json([
+                'message' => 'Choice updated successfully',
+                'story' => $story
+            ], 200);
+    
+        } catch (\Exception $e) {
+    
+            return response()->json([
+                'message' => 'Wrong data or invalid request format',
+                'error' => $e->getMessage()
+            ], 422); 
+        }
+    }
+
 }
