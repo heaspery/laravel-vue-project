@@ -2,9 +2,12 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+
 use App\Http\Controllers\ChapterAPIController;
 use App\Http\Controllers\ChoiceAPIController;
 use App\Http\Controllers\StoryAPIController;
+use App\Http\Controllers\GameHistoryAPIController;
+use App\Http\Controllers\UserAPIController;
 
 
 
@@ -34,3 +37,11 @@ Route::post('/stories', [StoryAPIController::class, 'createStory']);
 Route::put('/stories/{id}', [StoryAPIController::class, 'updateStory']);
 
 //Game History API Routes
+Route::get('/game-histories', [GameHistoryAPIController::class, 'getGameHistories']);
+Route::get('/game-histories/{id}', [GameHistoryAPIController::class, 'getGameHistory']);
+Route::post('/game-histories', [GameHistoryAPIController::class, 'createGameHistory']);
+Route::put('/game-histories/{id}', [GameHistoryAPIController::class, 'updateGameHistory']);
+
+//User API Routes
+Route::get('/users', [UserAPIController::class, 'getUsers']);
+Route::get('/users/{id}', [UserAPIController::class, 'getUser']);
