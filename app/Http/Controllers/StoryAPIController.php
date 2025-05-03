@@ -14,6 +14,11 @@ class StoryAPIController extends Controller
     public function getStories()
     {
         $stories = Story::all();
+
+        if ($stories->isEmpty()) {
+            return response()->json(null, 204); 
+        }
+
         return response()->json($stories, 200);
  
     }
@@ -26,7 +31,7 @@ class StoryAPIController extends Controller
         $story = Story::find($id);
 
         if (!$story) {
-            return response()->json(['message' => 'Story not found'], 404);
+            return response()->json(null, 204);
         }
 
         return response()->json($story, 200);
@@ -52,7 +57,7 @@ class StoryAPIController extends Controller
             return response()->json([
                 'message' => 'Story created successfully',
                 'story' => $story
-            ], 200);
+            ], 201);
 
         } catch (\Exception $e) {
             return response()->json([
@@ -73,9 +78,9 @@ class StoryAPIController extends Controller
             $story = Story::find($id);
     
             if (!$story) {
-                return response()->json(['message' => 'Story not found'], 404);
+                return response()->json(null, 204); 
             }
-    
+
             $story->update(array_filter([
                 'title' => $validated['title'] ?? $story->title,
                 'description' => $validated['description'] ?? $story->description,
@@ -95,6 +100,22 @@ class StoryAPIController extends Controller
                 'error' => $e->getMessage()
             ], 422); 
         }
+    }
+
+    /**
+     * Supprimer une histoire
+     */
+    public function deleteStory($id)
+    {
+        $story = Story::find($id);
+
+        if (!$story) {
+            return response()->json(null, 204); 
+        }
+
+        $story->delete();
+
+        return response()->json(['message' => 'Story deleted successfully'], 200);
     }
 
 }

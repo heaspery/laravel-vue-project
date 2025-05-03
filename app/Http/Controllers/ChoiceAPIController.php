@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 use App\Models\Choice;
-use Illuminate\Http\Request;
+
 use App\Http\Requests\ChoiceStoreRequest;
 use App\Http\Requests\ChoiceUpdateRequest;
 
@@ -14,6 +14,10 @@ class ChoiceAPIController extends Controller
        public function getChoices()
     {
         $choices = Choice::all();
+
+        if ($choices->isEmpty()) {
+            return response()->json(null, 204); 
+        }
         return response()->json($choices, 200);
  
     }
@@ -25,9 +29,8 @@ class ChoiceAPIController extends Controller
     {
         $choice = Choice::find($id);
 
-        if (!$choice) {
-            return response()->json(['message' => '
-            Choice not found'], 404);
+        if ($choice->isEmpty()) {
+            return response()->json(null, 204); 
         }
 
         return response()->json($choice, 200);
@@ -54,7 +57,7 @@ class ChoiceAPIController extends Controller
             return response()->json([
                 'message' => 'Choice created successfully',
                 'choice' => $choice
-            ], 200);
+            ], 201);
 
         } catch (\Exception $e) {
             return response()->json([
@@ -76,7 +79,7 @@ class ChoiceAPIController extends Controller
             $choice = Choice::find($id);
     
             if (!$choice) {
-                return response()->json(['message' => 'Choice not found'], 404);
+                return response()->json(null, 204); 
             }
     
             $choice->update(array_filter([
@@ -98,5 +101,19 @@ class ChoiceAPIController extends Controller
             ], 422); 
         }
     }
+
+    public function deleteChoice($id)
+    {
+        $choice = Choice::find($id);
+
+        if (!$choice) {
+            return response()->json(null, 204); 
+        }
+
+        $choice->delete();
+
+        return response()->json(['message' => 'Choice deleted successfully'], 200);
+    }
+
 
 }

@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\GameHistory;
 use App\Http\Requests\GameHistoryStoreRequest;
 use App\Http\Requests\GameHistoryUpdateRequest;
-use Illuminate\Http\Request;
 
 class GameHistoryAPIController extends Controller
 {
@@ -15,6 +14,11 @@ class GameHistoryAPIController extends Controller
     public function getGameHistories()
     {
         $gameHistories = GameHistory::all();
+
+        if ($gameHistories->isEmpty()) {
+            return response()->json(null, 204); 
+        }
+
         return response()->json($gameHistories, 200);
  
     }
@@ -27,7 +31,7 @@ class GameHistoryAPIController extends Controller
         $gameHistory = GameHistory::find($id);
 
         if (!$gameHistory) {
-            return response()->json(['message' => 'Chapter not found'], 404);
+            return response()->json(null, 204);
         }
 
         return response()->json($gameHistory, 200);
@@ -54,7 +58,7 @@ class GameHistoryAPIController extends Controller
             return response()->json([
                 'message' => 'Game History created successfully',
                 'gameHistory' => $gameHistory
-            ], 200);
+            ], 201);
 
         } catch (\Exception $e) {
             return response()->json([
@@ -76,7 +80,7 @@ class GameHistoryAPIController extends Controller
         $gameHistory = GameHistory::find($id);
 
         if (!$gameHistory) {
-            return response()->json(['message' => 'GameHistory not found'], 404);
+            return response()->json(null, 204); 
         }
 
         $gameHistory->update(array_filter([
@@ -100,4 +104,16 @@ class GameHistoryAPIController extends Controller
     }
 }
 
+    public function deleteGameHistory($id)
+    {
+        $gameHistory = GameHistory::find($id);
+
+        if (!$gameHistory) {
+            return response()->json(null, 204);
+        }
+
+        $gameHistory->delete();
+
+        return response()->json(['message' => 'GameHistory deleted successfully'], 200);
+    }
 }

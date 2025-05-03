@@ -17,6 +17,11 @@ class ChapterAPIController extends Controller
     public function getChapters()
     {
         $chapters = Chapter::all();
+
+        if ($chapters->isEmpty()) {
+            return response()->json(null, 204);  
+        }
+
         return response()->json($chapters, 200);
  
     }
@@ -29,11 +34,27 @@ class ChapterAPIController extends Controller
         $chapter = Chapter::find($id);
 
         if (!$chapter) {
-            return response()->json(['message' => 'Chapter not found'], 404);
+            return response()->json(null, 204);
         }
 
         return response()->json($chapter, 200);
     }
+
+    /**
+     * Récupérer tous les chapitres d'une histoire
+     */
+
+    public function getChaptersByStory($story_id)
+{
+    $chapters = Chapter::where('story_id', $story_id)->get();
+
+    if ($chapters->isEmpty()) {
+        return response()->json(null, 204);
+    }
+
+    return response()->json($chapters, 200);
+}
+
     /**
      * Créer un chapitre
      */
@@ -56,7 +77,7 @@ class ChapterAPIController extends Controller
             return response()->json([
                 'message' => 'Chapter created successfully',
                 'chapter' => $chapter
-            ], 200);
+            ], 201);
 
         } catch (\Exception $e) {
             return response()->json([
