@@ -19,6 +19,11 @@ class Chapter extends Model
     {
         return $this->belongsTo(Story::class);
     }
+
+    public function choices()
+{
+    return $this->hasMany(Choice::class);
+}
 }
 
 

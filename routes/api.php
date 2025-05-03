@@ -27,6 +27,7 @@ Route::delete('/chapters/{id}', [ChapterAPIController::class, 'deleteChapter']);
 //Choice API Routes
 Route::get('/choices', [ChoiceAPIController::class, 'getChoices']);
 Route::get('/choices/{id}', [ChoiceAPIController::class, 'getChoice']);
+Route::get('/chapters/{chapter_id}/choices', [ChoiceAPIController::class, 'getChoicesByChapter']);
 Route::post('/choices', [ChoiceAPIController::class, 'createChoice']);
 Route::put('/choices/{id}', [ChoiceAPIController::class, 'updateChoice']);
 Route::delete('/choices/{id}', [ChoiceAPIController::class, 'deleteChoice']);

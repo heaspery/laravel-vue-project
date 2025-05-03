@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 use App\Models\Choice;
+use App\Models\Chapter;
 
 use App\Http\Requests\ChoiceStoreRequest;
 use App\Http\Requests\ChoiceUpdateRequest;
+
 
 
 class ChoiceAPIController extends Controller
@@ -35,6 +37,30 @@ class ChoiceAPIController extends Controller
 
         return response()->json($choice, 200);
     }
+
+    public function getChoicesByChapter($chapter_id)
+    {
+        $chapter = Chapter::find($chapter_id);
+
+        if (!$chapter) {
+            return response()->json([
+                'error' => 'Chapitre non trouvé'
+            ], 204);
+        }
+
+        // Récupérer les choix associés à ce chapitre
+        $choices = Choice::where('chapter_id', $chapter_id)->get();
+
+        if ($choices->isEmpty()) {
+            return response()->json([
+                'error' => 'Aucun choix trouvé pour ce chapitre'
+            ], 204);
+        }
+
+        // Retourner les choix associés au chapitre avec un code 200
+        return response()->json($choices, 200);
+    }
+
 
     /**
      * Créer un Choix
