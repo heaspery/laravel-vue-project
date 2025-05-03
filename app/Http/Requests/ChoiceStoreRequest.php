@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class ChapterStoreRequest extends FormRequest
+class ChoiceStoreRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -16,16 +16,15 @@ class ChapterStoreRequest extends FormRequest
 
     /**
      * Get the validation rules that apply to the request.
-     *a
+     *
      * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
      */
     public function rules(): array
     {
         return [
-            'story_id' => 'required|exists:stories,id',
-            'title' => 'required|string',
-            'content' => 'required|string',
-            'image' => 'required|string',
+            'content' => ['required', 'string'],
+            'next_chapter_id' => ['required', 'exists:chapters,id'],
+            'chapter_id' => ['required', 'exists:chapters,id'],
         ];
     }
 }

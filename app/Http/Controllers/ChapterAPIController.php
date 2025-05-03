@@ -67,7 +67,7 @@ class ChapterAPIController extends Controller
     }
 
     /**
-     * Mettre à jour un chapitre
+     * Mettre à jour un chapitre : 0 champ, 1 champ ou tous les champs
      */
     public function updateChapter(ChapterUpdateRequest $request, $id) 
 {
@@ -104,6 +104,21 @@ class ChapterAPIController extends Controller
         ], 422); 
     }
 }
+    /**
+     * Supprimer un chapitre
+     */
+    public function deleteChapter($id)
+    {
+        $chapter = Chapter::find($id);
+
+        if (!$chapter) {
+            return response()->json(['message' => 'Chapter not found'], 404);
+        }
+
+        $chapter->delete();
+
+        return response()->json(['message' => 'Chapter deleted successfully'], 200);
+    }
 
 
 }

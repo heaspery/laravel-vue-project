@@ -17,7 +17,7 @@ class Choice extends Model
      */
     public function chapter()
     {
-        return $this->belongsTo(Chapter::class);
+        return $this->belongsTo(Chapter::class, 'chapter_id');
     }
 
     /**

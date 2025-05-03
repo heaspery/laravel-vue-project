@@ -29,14 +29,4 @@ class ChapterUpdateRequest extends FormRequest
         ];
     }
 
-    public function messages(): array
-    {
-        return [
-            'title.required' => 'Le titre est obligatoire.',
-            'content.required' => 'Le contenu est obligatoire.',
-            'story_id.required' => 'L\'identifiant de l\'histoire est requis.',
-            'story_id.exists' => 'L\'histoire spécifiée n\'existe pas.',
-            'image.url' => 'L\'image doit être une URL valide.',
-        ];
-    }
 }
