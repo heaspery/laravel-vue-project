@@ -12,16 +12,12 @@ Route::get('/user', function (Request $request) {
 })->middleware('auth:sanctum');
 
 
-
-Route::get(uri: 'ping', action: function() {
-    return response()->json(['message' => 'pong'], 200);
-})->name('api.ping');
-
-
-
 //Chapter API Routes
-Route::get('/chapters', [ChapterAPIController::class, 'getAllChapters']);
+Route::get('/chapters', [ChapterAPIController::class, 'getChapters']);
 Route::post('/chapters/create', [ChapterAPIController::class, 'createChapter']);
+Route::get('/chapters/{id}', [ChapterAPIController::class, 'getChapter']);
+Route::put('/chapters/{id}', [ChapterAPIController::class, 'updateChapter']);
+
 
 //Choice API Routes
 

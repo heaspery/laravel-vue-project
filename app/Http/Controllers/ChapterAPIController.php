@@ -2,27 +2,49 @@
 
 namespace App\Http\Controllers;
 use App\Models\Chapter;
+use App\Http\Requests\ChapterStoreRequest;
+use App\Http\Requests\ChapterUpdateRequest;
+
 
 use Illuminate\Http\Request;
 
 class ChapterAPIController extends Controller
 {
 
-    public function getAllChapters()
+    /**
+     * Récupérer tous les chapitres
+     */
+    public function getChapters()
     {
         $chapters = Chapter::all();
         return response()->json($chapters, 200);
  
     }
-    public function createChapter(Request $request)
+
+    /**
+     * Récupérer un chapitre par son ID
+     */
+    public function getChapter($id)
+    {
+        $chapter = Chapter::find($id);
+
+        if (!$chapter) {
+            return response()->json(['message' => 'Chapter not found'], 404);
+        }
+
+        return response()->json($chapter, 200);
+    }
+    /**
+     * Créer un chapitre
+     */
+    public function createChapter(ChapterStoreRequest $request)
     {
         try {
-            $validated = $request->validate([
-                'story_id' => 'required|exists:stories,id',
-                'title' => 'required|string',
-                'content' => 'required|string',
-                'image' => 'required|string',        
-            ]);
+            $validated = $request->validated();
+
+        if (!$validated) {
+            return response()->json(['message' => 'Invalid JSON data'], 400);
+        }
 
             $chapter = Chapter::create([
                 'title' => $validated['title'],
@@ -34,7 +56,7 @@ class ChapterAPIController extends Controller
             return response()->json([
                 'message' => 'Chapter created successfully',
                 'chapter' => $chapter
-            ], 201);
+            ], 200);
 
         } catch (\Exception $e) {
             return response()->json([
@@ -43,4 +65,45 @@ class ChapterAPIController extends Controller
             ], 422); 
         }
     }
+
+    /**
+     * Mettre à jour un chapitre
+     */
+    public function updateChapter(ChapterUpdateRequest $request, $id) 
+{
+    try {
+        $validated = $request->validated();
+
+        if (!$validated) {
+            return response()->json(['message' => 'Invalid JSON data'], 400);
+        }
+
+        $chapter = Chapter::find($id);
+
+        if (!$chapter) {
+            return response()->json(['message' => 'Chapter not found'], 404);
+        }
+
+        $chapter->update(array_filter([
+            'title' => $validated['title'] ?? $chapter->title,
+            'content' => $validated['content'] ?? $chapter->content,
+            'story_id' => $validated['story_id'] ?? $chapter->story_id,
+            'image' => $validated['image'] ?? $chapter->image,
+        ]));
+
+        return response()->json([
+            'message' => 'Chapter updated successfully',
+            'chapter' => $chapter
+        ], 200);
+
+    } catch (\Exception $e) {
+
+        return response()->json([
+            'message' => 'Wrong data or invalid request format',
+            'error' => $e->getMessage()
+        ], 422); 
+    }
+}
+
+
 }
