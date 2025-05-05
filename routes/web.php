@@ -4,7 +4,6 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
-use App\Models\Chapter;
 
 Route::get('/', function () {
     return Inertia::render('Welcome', [
@@ -27,10 +26,7 @@ Route::middleware('auth')->group(function () {
 
 
 Route::get('/', function () {
-    $chapters = Chapter::with('choices')->get();
-    return Inertia::render('Home', [
-        'chapters' => $chapters
-    ]);
+    return Inertia::render('Home');
 });
 
 

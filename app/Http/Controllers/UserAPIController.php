@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 
 class UserAPIController extends Controller
 {
@@ -31,5 +32,11 @@ class UserAPIController extends Controller
         }
 
         return response()->json($user, 200);
+    }
+
+    public function getCurrentUserID()
+    {
+        $id = Auth::id();
+        return $id;
     }
 }
