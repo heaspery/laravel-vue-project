@@ -2,66 +2,13 @@
 import { ref } from 'vue';
 import { useFetchJson } from '../composables/useFetchJson';
 import DropdownLink from '@/Components/DropdownLink.vue';
+import { router } from '@inertiajs/vue3';
 
 const { data: stories, error: storiesError, loading: storiesLoading } = useFetchJson('/api/stories');
-const selectedStory = ref(null);
-const chapters = ref(null);
-const choices = ref(null);
-const chapterId = ref(1);
 
-// Fonction pour sélectionner une histoire
-async function fetchStory(storyId) {
-    const data = await fetch(`/api/stories/${storyId}`)
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-            return response.json();
-        })
-        .catch(error => {
-            console.error('There was a problem with the fetch operation:', error);
-        });
-    selectedStory.value = data;
-
+function displayStory(id) {
+  router.visit(`/story/${id}`);
 }
-
-async function fetchChapters(storyId) {
-    const data = await fetch(`/api/stories/${storyId}/chapters`)
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-            return response.json();
-        })
-        .catch(error => {
-            console.error('There was a problem with the fetch operation:', error);
-        });
-        chapters.value = data;
-}
-
-async function displayChoices(chapterId) {
-    const data = await fetch(`/api/chapters/${chapterId}/choices`)
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-            return response.json();
-        })
-        .catch(error => {
-            console.error('There was a problem with the fetch operation:', error);
-        });
-        choices.value = data;
-}
-
-async function displayStory(storyId) {
-    await fetchChapters(storyId);
-    await fetchStory(storyId);
-    await displayChoices(chapterId.value);
-
-}
-
-
-
 
 </script>
 
@@ -82,26 +29,5 @@ async function displayStory(storyId) {
             </div>
         </div>
     </div>
-
-    <div id="storyDisplay" class="p-6">
-        <div v-if="selectedStory" class="p-6 border-t mt-4">
-            <h3 class="text-lg font-bold text-indigo-600">Histoire sélectionnée :</h3>
-            <p class="text-xl">{{ selectedStory.title }}</p>
-        </div>
-        <div v-if="chapters" class="p-6 border-t mt-4">
-            <h3 class="text-lg font-bold text-indigo-600">{{ chapters[chapterId].title }}</h3>
-            <p class="text-xl">{{ chapters[chapterId].content }}</p>
-        </div>
-        <div v-if="chapters" class="p-6 border-t mt-4">
-            <h3 class="text-lg font-bold text-indigo-600">Choix :</h3>
-            <ul>
-                <li v-for="choice in choices" :key="choice.id" class="cursor-pointer hover:bg-gray-100 p-4 border"
-                    @click="displayChoices(chapterId)">
-                    <p>{{ choice.content }}</p>
-                </li>
-            </ul>
-            </div>
-    </div>
-
 
 </template>

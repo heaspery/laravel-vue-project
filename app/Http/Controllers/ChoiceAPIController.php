@@ -30,11 +30,11 @@ class ChoiceAPIController extends Controller
     public function getChoice($id)
     {
         $choice = Choice::find($id);
-
-        if ($choice->isEmpty()) {
+    
+        if (!$choice) {
             return response()->json(null, 204); 
         }
-
+    
         return response()->json($choice, 200);
     }
 
