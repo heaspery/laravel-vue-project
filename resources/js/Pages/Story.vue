@@ -1,133 +1,94 @@
 <script setup>
-import { ref, watchEffect, watch } from 'vue';
+import { ref, onMounted } from 'vue';
+import { useFetchJson } from '@/composables/useFetchJson';
+
+const chapterId = ref();
+const currentChapter = ref(null);
+const choices = ref([]);
 
 const props = defineProps({ story: Object });
 
-const currentChapterId = ref(1);
-const currentChapterData = ref(null);
-const choices = ref([]);
-const choicesLoading = ref(false);
-const choicesError = ref(null);
-const chapters = ref([]);
-const chaptersLoading = ref(false);
-const chaptersError = ref(null);
 
-// Fonction pour charger tous les chapitres
-async function fetchChapters(storyId) {
-    try {
-        chaptersLoading.value = true;
-        const res = await fetch(`/api/stories/${storyId}/chapters`);
-        if (!res.ok) throw new Error(`Erreur HTTP ${res.status}`);
-        chapters.value = await res.json();
-        chaptersError.value = null;
-    } catch (err) {
-        chaptersError.value = err;
-        chapters.value = [];
-    } finally {
-        chaptersLoading.value = false;
-    }
-}
-
-// Fonction pour charger les données d’un chapitre
 async function fetchChapter(chapterId) {
-    const res = await fetch(`/api/chapters/${chapterId}`);
-    if (!res.ok) throw new Error(`Erreur HTTP ${res.status}`);
-    return await res.json();
+    const data = await fetch(`/api/chapters/${chapterId}`);
+    const chapter = await data.json();
+    return chapter;
 }
 
-// Fonction pour charger les choix d’un chapitre
 async function fetchChoices(chapterId) {
-    try {
-        choicesLoading.value = true;
-        const res = await fetch(`/api/chapters/${chapterId}/choices`);
-        if (!res.ok) throw new Error(`Erreur HTTP ${res.status}`);
-        choices.value = await res.json();
-        choicesError.value = null;
-    } catch (err) {
-        choicesError.value = err;
-        choices.value = [];
-    } finally {
-        choicesLoading.value = false;
+    const data = await fetch(`/api/chapters/${chapterId}/choices`);
+    if (data.length === 0) {
+        return [];
+    } else {
+        const choices = await data.json();
+        return choices;
     }
 }
 
-// Quand l’histoire change, on recharge tout depuis le premier chapitre
-watch(() => props.story.id, async (newStoryId) => {
-    currentChapterId.value = 1;
-    await fetchChapters(newStoryId);
-    currentChapterData.value = await fetchChapter(currentChapterId.value);
-    await fetchChoices(currentChapterId.value);
+async function displayNext(nextChapterId) {
+    currentChapter.value = await fetchChapter(nextChapterId);
+    choices.value = await fetchChoices(currentChapter.value.id);
+    await setProgress(currentChapter.value.id);
+}
+
+async function startOver(){
+    currentChapter.value = await fetchChapter(1);
+    choices.value = await fetchChoices(currentChapter.value.id);
+    await setProgress(1);
+}
+
+onMounted(async () => {
+    const progress = await getProgress();
+
+    if (progress) {
+        chapterId.value = progress;
+    } else {
+        chapterId.value = 1;
+    }
+
+    currentChapter.value = await fetchChapter(chapterId.value);
+    choices.value = await fetchChoices(currentChapter.value.id);
+
 });
 
-// Initialisation au montage
-fetchChapters(props.story.id);
-fetchChapter(currentChapterId.value).then(data => currentChapterData.value = data);
-fetchChoices(currentChapterId.value);
-
-// Quand l’ID du chapitre change (ex: clic sur un choix)
-watchEffect(async () => {
-    if (!currentChapterId.value) return;
-    try {
-        currentChapterData.value = await fetchChapter(currentChapterId.value);
-        await fetchChoices(currentChapterId.value);
-    } catch (e) {
-        console.error("Erreur lors du chargement du chapitre ou des choix", e);
-    }
-});
-
-// Gérer le clic sur un choix
-async function handleChoice(choiceId) {
-    try {
-        const res = await fetch(`/api/choices/${choiceId}`);
-        if (!res.ok) throw new Error(`Erreur HTTP ${res.status}`);
-        const data = await res.json();
-        currentChapterId.value = data.next_chapter_id;
-    } catch (err) {
-        console.error("Erreur lors de la sélection du choix :", err);
+async function getProgress() {
+    const progress = localStorage.getItem(`progres${props.story.id}`);
+    if (progress) {
+        return JSON.parse(progress);
+    } else {
+        return null;
     }
 }
 
-async function restartStory() {
-    currentChapterId.value = 1;
-    try {
-        currentChapterData.value = await fetchChapter(currentChapterId.value);
-        await fetchChoices(currentChapterId.value);
-    } catch (err) {
-        console.error("Erreur lors du redémarrage de l’histoire", err);
-    }
+async function setProgress(chapterId) {
+    localStorage.setItem(`progres${props.story.id}`, JSON.stringify(chapterId));
 }
+
 </script>
 
 
 
 <template>
-    <div id="story" class="p-6">
-        <h1 class="text-3xl font-bold mb-4">{{ story.title }}</h1>
-        <p class="text-lg">{{ story.description }}</p>
-        <button @click="restartStory" class="mt-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">
-            🔄 Recommencer l’histoire
-        </button>
+    <div id="storyDescription" class="p-6">
+        <h1>{{ props.story.title }}</h1>
+        <p>{{ props.story.description }}</p>
     </div>
-
-
-    <div id="chapterView" class="p-6">
-        <div v-if="chaptersLoading">Chargement...</div>
-        <div v-else-if="chaptersError">Erreur : {{ chaptersError.message }}</div>
-        <div v-else-if="!currentChapterData">Chargement du chapitre...</div>
-        <div v-else class="cursor-pointer hover:bg-gray-100 p-4 border">
-            <h2 class="text-xl font-semibold">{{ currentChapterData.title }}</h2>
-            <p>{{ currentChapterData.content }}</p>
-        </div>
+    <div v-if="currentChapter" id="chapter" class="p-6">
+        <h2>{{ currentChapter.title }}</h2>
+        <p>{{ currentChapter.content }}</p>
     </div>
-
-    <div id="choices" class="p-6">
-        <div v-if="choicesLoading">Chargement des choix...</div>
-        <div v-else-if="choicesError">Erreur : {{ choicesError.message }}</div>
-        <div v-else>
-            <div v-for="choice in choices" :key="choice.id" class="cursor-pointer hover:bg-gray-100 p-4 border"
-                @click="handleChoice(choice.id)">
-                <h2 class="text-xl font-semibold">{{ choice.content }}</h2>
-            </div>
-        </div>
+    <div v-else>Chargement...</div>
+    <div id="choices" v-if="choices.length>0" class="p-6">
+        <ul>
+            <li v-for="choice in choices" :key="choice.id">
+                <button @click="displayNext(choice.next_chapter_id)">
+                    {{ choice.content }}
+                </button>
+            </li>
+        </ul>
+    </div>
+    <div v-else class="p-6">
+        <h2>Fin de l'histoire</h2>
+        <button @click="startOver()">Recommencer</button>
     </div>
 </template>

@@ -38,6 +38,7 @@ class ChoiceAPIController extends Controller
         return response()->json($choice, 200);
     }
 
+
     public function getChoicesByChapter($chapter_id)
     {
         $chapter = Chapter::find($chapter_id);
@@ -48,13 +49,10 @@ class ChoiceAPIController extends Controller
             ], 204);
         }
 
-        // Récupérer les choix associés à ce chapitre
         $choices = Choice::where('chapter_id', $chapter_id)->get();
 
         if ($choices->isEmpty()) {
-            return response()->json([
-                'error' => 'Aucun choix trouvé pour ce chapitre'
-            ], 204);
+            return response()->json([], 200); // renvoie juste un tableau vide
         }
 
         // Retourner les choix associés au chapitre avec un code 200
