@@ -19,7 +19,7 @@ class ChapterAPIController extends Controller
         $chapters = Chapter::all();
 
         if ($chapters->isEmpty()) {
-            return response()->json(null, 204);  
+            return response()->json([], 200);
         }
 
         return response()->json($chapters, 200);
@@ -34,7 +34,7 @@ class ChapterAPIController extends Controller
         $chapter = Chapter::find($id);
 
         if (!$chapter) {
-            return response()->json(null, 204);
+            return response()->json([], 200);
         }
 
         return response()->json($chapter, 200);
@@ -49,7 +49,7 @@ class ChapterAPIController extends Controller
     $chapters = Chapter::where('story_id', $story_id)->get();
 
     if ($chapters->isEmpty()) {
-        return response()->json(null, 204);
+        return response()->json([], 200);    
     }
 
     return response()->json($chapters, 200);

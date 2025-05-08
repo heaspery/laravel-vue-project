@@ -1,12 +1,14 @@
 <script setup>
 import { ref, onMounted } from 'vue';
-import { useFetchJson } from '@/composables/useFetchJson';
+import { Head } from '@inertiajs/vue3';
 
 const chapterId = ref();
 const currentChapter = ref(null);
 const choices = ref([]);
 
-const props = defineProps({ story: Object });
+const props = defineProps({
+    story: Object,  
+});
 
 
 async function fetchChapter(chapterId) {
@@ -69,6 +71,7 @@ async function setProgress(chapterId) {
 
 
 <template>
+    <Head title={{ props.story.title }} />
     <div id="storyDescription" class="p-6">
         <h1>{{ props.story.title }}</h1>
         <p>{{ props.story.description }}</p>

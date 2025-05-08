@@ -8,7 +8,7 @@ use App\Http\Requests\GameHistoryUpdateRequest;
 
 class GameHistoryAPIController extends Controller
 {
-     /**
+    /**
      * Récupérer tous les historiques de jeu
      */
     public function getGameHistories()
@@ -16,11 +16,24 @@ class GameHistoryAPIController extends Controller
         $gameHistories = GameHistory::all();
 
         if ($gameHistories->isEmpty()) {
-            return response()->json(null, 204); 
+            return response()->json([], 200);
         }
 
         return response()->json($gameHistories, 200);
- 
+
+    }
+
+    public function getHistoryForUserStory($storyID, $userID)
+    {
+        $gameHistories = GameHistory::where('story_id', $storyID)
+            ->where('user_id', $userID)
+            ->get();
+
+        if ($gameHistories->isEmpty()) {
+            return response()->json([], 200); 
+        }
+
+        return response()->json($gameHistories, 200);
     }
 
     /**
@@ -31,7 +44,7 @@ class GameHistoryAPIController extends Controller
         $gameHistory = GameHistory::find($id);
 
         if (!$gameHistory) {
-            return response()->json(null, 204);
+            return response()->json([], 200);
         }
 
         return response()->json($gameHistory, 200);
@@ -42,9 +55,9 @@ class GameHistoryAPIController extends Controller
         try {
             $validated = $request->validated();
 
-        if (!$validated) {
-            return response()->json(['message' => 'Invalid JSON data'], 400);
-        }
+            if (!$validated) {
+                return response()->json(['message' => 'Invalid JSON data'], 400);
+            }
 
             $validated['name_choice'] = $validated['name_choice'] ?? 'utilisateur';
 
@@ -63,46 +76,46 @@ class GameHistoryAPIController extends Controller
         } catch (\Exception $e) {
             return response()->json([
                 'message' => 'Wrong data',
-                'error' => $e->getMessage() 
-            ], 422); 
+                'error' => $e->getMessage()
+            ], 422);
         }
     }
 
-    public function updateGameHistory(GameHistoryUpdateRequest $request, $id) 
-{
-    try {
-        $validated = $request->validated();
+    public function updateGameHistory(GameHistoryUpdateRequest $request, $id)
+    {
+        try {
+            $validated = $request->validated();
 
-        if (!$validated) {
-            return response()->json(['message' => 'Invalid JSON data'], 400);
+            if (!$validated) {
+                return response()->json(['message' => 'Invalid JSON data'], 400);
+            }
+
+            $gameHistory = GameHistory::find($id);
+
+            if (!$gameHistory) {
+                return response()->json(null, 204);
+            }
+
+            $gameHistory->update(array_filter([
+                'chapter_id' => $validated['chapter_id'] ?? $gameHistory->chapter_id,
+                'user_id' => $validated['user_id'] ?? $gameHistory->user_id,
+                'story_id' => $validated['story_id'] ?? $gameHistory->story_id,
+                'name_choice' => $validated['name_choice'] ?? $gameHistory->name_choice,
+            ]));
+
+            return response()->json([
+                'message' => 'Chapter updated successfully',
+                'gameHistory' => $gameHistory
+            ], 200);
+
+        } catch (\Exception $e) {
+
+            return response()->json([
+                'message' => 'Wrong data or invalid request format',
+                'error' => $e->getMessage()
+            ], 422);
         }
-
-        $gameHistory = GameHistory::find($id);
-
-        if (!$gameHistory) {
-            return response()->json(null, 204); 
-        }
-
-        $gameHistory->update(array_filter([
-            'chapter_id' => $validated['chapter_id'] ?? $gameHistory->chapter_id,
-            'user_id' => $validated['user_id'] ?? $gameHistory->user_id,
-            'story_id' => $validated['story_id'] ?? $gameHistory->story_id,
-            'name_choice' => $validated['name_choice'] ?? $gameHistory->name_choice,
-        ]));
-
-        return response()->json([
-            'message' => 'Chapter updated successfully',
-            'gameHistory' => $gameHistory
-        ], 200);
-
-    } catch (\Exception $e) {
-
-        return response()->json([
-            'message' => 'Wrong data or invalid request format',
-            'error' => $e->getMessage()
-        ], 422); 
     }
-}
 
     public function deleteGameHistory($id)
     {

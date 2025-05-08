@@ -18,7 +18,7 @@ class ChoiceAPIController extends Controller
         $choices = Choice::all();
 
         if ($choices->isEmpty()) {
-            return response()->json(null, 204); 
+            return response()->json([], 200); 
         }
         return response()->json($choices, 200);
  
@@ -32,7 +32,7 @@ class ChoiceAPIController extends Controller
         $choice = Choice::find($id);
     
         if (!$choice) {
-            return response()->json(null, 204); 
+            return response()->json([], 200);
         }
     
         return response()->json($choice, 200);
@@ -52,7 +52,7 @@ class ChoiceAPIController extends Controller
         $choices = Choice::where('chapter_id', $chapter_id)->get();
 
         if ($choices->isEmpty()) {
-            return response()->json([], 200); // renvoie juste un tableau vide
+            return response()->json([], 200);
         }
 
         // Retourner les choix associés au chapitre avec un code 200

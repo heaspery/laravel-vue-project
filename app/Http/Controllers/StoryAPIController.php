@@ -16,7 +16,7 @@ class StoryAPIController extends Controller
         $stories = Story::all();
 
         if ($stories->isEmpty()) {
-            return response()->json(null, 204); 
+            return response()->json([], 200);
         }
 
         return response()->json($stories, 200);
@@ -31,7 +31,7 @@ class StoryAPIController extends Controller
         $story = Story::find($id);
 
         if (!$story) {
-            return response()->json(null, 204);
+            return response()->json([], 200);
         }
 
         return response()->json($story, 200);
