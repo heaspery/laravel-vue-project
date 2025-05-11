@@ -45,7 +45,7 @@ Une fois téléchargé, exécutez les commandes suivantes dans le terminal pour 
    cp .env.example .env
    ```
 
-4. Créer votre propre clé d'application :
+4. Créer votre propre clé d'application, qui mettra à jour la valeur de votre APP_KEY dans votre fichier .env:
    ```bash
     php artisan key:generate
    ```
