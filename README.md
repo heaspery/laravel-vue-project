@@ -31,12 +31,23 @@ Une fois téléchargé, exécutez les commandes suivantes dans le terminal pour 
 
    ```bash
    npm install
+   npm run build
+
    ```
 
 2. Installation des dépendances avec Composer :
 
    ```bash
    composer install
+   ```
+3. Créer votre propre fichier de configuration :
+   ```bash
+   cp .env.example .env
+   ```
+
+4. Créer votre propre clé d'application :
+   ```bash
+    php artisan key:generate
    ```
 ## Lancer le projet
 
