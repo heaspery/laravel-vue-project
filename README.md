@@ -1,4 +1,4 @@
-### Histoire interactive
+## Histoires interactives
 
 Ce projet met à disposition une application full-stack permettant la création de compte, l'authentification, puis la lecture d'histoires interactives à choix multiples.
 
@@ -9,7 +9,7 @@ Ce projet met à disposition une application full-stack permettant la création 
 * Vue.js
 * Tailwind CSS
 
-### Mise en place
+## Mise en place
 
 Dans un premier temps, assurez-vous d’avoir :
 
@@ -38,8 +38,7 @@ Une fois téléchargé, exécutez les commandes suivantes dans le terminal pour 
    ```bash
    composer install
    ```
-
-### Lancer le projet
+## Lancer le projet
 
 Pour développer le projet en local, exécutez les commandes suivantes :
 
@@ -54,3 +53,4 @@ Pour développer le projet en local, exécutez les commandes suivantes :
    ```bash
    npm run dev
    ```
+
