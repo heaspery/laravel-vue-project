@@ -51,7 +51,7 @@ Une fois téléchargé, exécutez les commandes suivantes dans le terminal pour 
    ```
    
 5. Créer la base de données :
- ```bash
+   ```bash
     php artisan migrate
    ```
 6. Remplir la base de données de la première histoire :
