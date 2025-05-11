@@ -49,6 +49,13 @@ Une fois téléchargé, exécutez les commandes suivantes dans le terminal pour 
    ```bash
     php artisan key:generate
    ```
+
+⚠️ Une histoire et un compte de test sont déjà disponibles dans l'application, donc la base de données SQLite (`database/database.sqlite`) et un seeder de l'histoire sont déjà inclus et prêts à l’emploi. Il n’est donc pas nécessaire d’exécuter les migrations (`php artisan migrate`). Si vous souhaitez réinitialiser la base, vous pouvez supprimer ce fichier et relancer les migrations manuellement.
+
+**Utilisateur test**
+email : test@test.test
+mot de passe : testtest
+
 ## Lancer le projet
 
 Pour développer le projet en local, exécutez les commandes suivantes :
