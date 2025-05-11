@@ -32,7 +32,6 @@ Une fois téléchargé, exécutez les commandes suivantes dans le terminal pour 
    ```bash
    npm install
    npm run build
-
    ```
 
 2. Installation des dépendances avec Composer :
@@ -40,6 +39,7 @@ Une fois téléchargé, exécutez les commandes suivantes dans le terminal pour 
    ```bash
    composer install
    ```
+   
 3. Créer votre propre fichier de configuration :
    ```bash
    cp .env.example .env
@@ -49,7 +49,16 @@ Une fois téléchargé, exécutez les commandes suivantes dans le terminal pour 
    ```bash
     php artisan key:generate
    ```
+   
+5. Créer la base de données :
+ ```bash
+    php artisan migrate
+   ```
+6. Remplir la base de données de la première histoire :
 
+    ```bash
+    php artisan db:seed --class=Story1Seeder
+    ```
 
 ## Lancer le projet
 
