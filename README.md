@@ -27,19 +27,19 @@ Ensuite, vous pouvez cloner le dépôt Git.
 
 Une fois téléchargé, exécutez les commandes suivantes dans le terminal pour installer les dépendances :
 
-1. Installation des dépendances avec npm :
+1. Installation des dépendances avec Composer :
+
+   ```bash
+   composer install
+   ```
+
+2. Installation des dépendances avec npm :
 
    ```bash
    npm install
    npm run build
    ```
 
-2. Installation des dépendances avec Composer :
-
-   ```bash
-   composer install
-   ```
-   
 3. Créer votre propre fichier de configuration :
    ```bash
    cp .env.example .env
