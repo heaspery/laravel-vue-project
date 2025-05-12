@@ -54,14 +54,14 @@ Une fois téléchargé, exécutez les commandes suivantes dans le terminal pour 
    ```bash
     php artisan migrate
    ```
+   Vous aurez cette question, à laquelle vous pourrez répondre oui : 
 
    ```bash
-    Vous aurez cette question, à laquelle vous pourrez répondre oui : 
    WARN  The SQLite database configured for this application does not exist: database/database.sqlite.  
      ┌ Would you like to create it? ────────────────────────────────┐
      │ ● Yes / ○ No        
      ```
-6. Remplir la base de données de la première histoire :
+7. Remplir la base de données de la première histoire :
 
     ```bash
     php artisan db:seed --class=Story1Seeder
