@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\api\v1;
 use App\Models\Choice;
 use App\Models\Chapter;
+use Inertia\Controller;
 
 use App\Http\Requests\ChoiceStoreRequest;
 use App\Http\Requests\ChoiceUpdateRequest;

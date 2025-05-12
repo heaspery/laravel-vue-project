@@ -1,6 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\api\v1;
+
+use Inertia\Controller;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 

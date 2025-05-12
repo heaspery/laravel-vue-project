@@ -30,20 +30,22 @@ onMounted(async () => {
 
 
 async function fetchChapter(chapterId) {
-    const data = await fetch(`/api/chapters/${chapterId}`);
+    const data = await fetch(`/api/v1/chapters/${chapterId}`);
     const chapter = await data.json();
     return chapter;
 }
 
 async function fetchChoices(chapterId) {
-    const data = await fetch(`/api/chapters/${chapterId}/choices`);
-    if (data.length === 0) {
+    const response = await fetch(`/api/v1/chapters/${chapterId}/choices`);
+    const choices = await response.json();
+
+    if (!choices || choices.length === 0) {
         return [];
     } else {
-        const choices = await data.json();
         return choices;
     }
 }
+
 
 async function displayNext(nextChapterId) {
     currentChapter.value = await fetchChapter(nextChapterId);
@@ -82,15 +84,17 @@ async function setProgress(chapterId) {
         <h3 class="font-bold">Retour</h3>
         </a>
 
-    <div id="storyDescription" class="p-6 flex flex-col items-center">
+    <div id="storyDescription" class="p-1 flex flex-col items-center text-center">
         <TheTitle>{{ props.story.title }}</TheTitle>
-        <p class="text-center  font-bold">{{ props.story.description }}</p>
-    </div>
-    <div v-if="currentChapter" id="chapter" class="p-6">
+        <img  id="cover-image" class="w-72 h-auto object-contain" :src="`/images/${props.story.cover_image}`" :alt="props.story.title">
+        <label for="cover-image">A contemporary engraving of Mary Read · Wikipedia </label>
+
+        </div>
+    <div v-if="currentChapter" id="chapter" class="p-2">
         <h2 class="text-2xl font-bold mb-4 text-blue-900 mt-12 text-center">{{ currentChapter.title }}</h2>
         <p class="text-center">{{ currentChapter.content }}</p>
     </div>
-    <div v-else>Chargement...</div>
+    <div v-else class="text-2xl font-bold mb-4 text-blue-900 mt-12 text-center">Chargement...</div>
     <div id="choices" v-if="choices.length>0" class="mb-8">
         <ul class="p-6 flex flex-col items-center">
             <li v-for="choice in choices" :key="choice.id" class="p-2">
@@ -100,7 +104,7 @@ async function setProgress(chapterId) {
             </li>
         </ul>
     </div>
-    <div v-else class="p-6 flex flex-col items-center">
+    <div v-else class="p-6 mb-8 flex flex-col items-center">
         <h2 class="p-2">Fin de l'histoire</h2>
         <PrimaryButton @click="startOver()">Recommencer</PrimaryButton>
     </div>

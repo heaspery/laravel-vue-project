@@ -11,8 +11,8 @@ import { Link } from '@inertiajs/vue3';
             </a>
         </div>
         <ul class="flex flex-row space-x-4">
-            <li><a href="/login" class="hover:text-lime-500 active:text-lime-500">Se Connecter</a></li>
-            <li><a href="/register" class="hover:text-lime-500 active:text-lime-500">S'inscrire</a></li>
+            <li><a href="/login" class="font-bold hover:text-lime-500 active:text-lime-500">Se Connecter</a></li>
+            <li><a href="/register" class="font-bold hover:text-lime-500 active:text-lime-500">S'inscrire</a></li>
         </ul>
     </nav>
 </template>

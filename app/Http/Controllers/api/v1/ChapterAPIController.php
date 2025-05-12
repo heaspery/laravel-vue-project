@@ -1,9 +1,10 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\api\v1;
 use App\Models\Chapter;
 use App\Http\Requests\ChapterStoreRequest;
 use App\Http\Requests\ChapterUpdateRequest;
+use Inertia\Controller;
 
 
 use Illuminate\Http\Request;
