@@ -69,7 +69,7 @@ Une fois téléchargé, exécutez les commandes suivantes dans le terminal pour 
 
 ## Lancer le projet
 
-Pour développer le projet en local, exécutez les commandes suivantes :
+Pour développer le projet en local, exécutez les commandes suivantes, chacune dans un terminal différent:
 
 1. Démarrer le serveur PHP :
 
@@ -82,4 +82,3 @@ Pour développer le projet en local, exécutez les commandes suivantes :
    ```bash
    npm run dev
    ```
-
