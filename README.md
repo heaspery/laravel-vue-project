@@ -13,15 +13,17 @@ Ce projet met à disposition une application full-stack permettant la création 
 
 Dans un premier temps, assurez-vous d’avoir :
 
-1. Laravel installé
-
-   * Installation : [https://laravel.com/docs/10.x/installation](https://laravel.com/docs/10.x/installation)
-2. Node.js installé
-
-   * Installation : [https://nodejs.org/en/download](https://nodejs.org/en/download)
-3. Composer installé
+1. Composer installé
 
    * Installation : [https://getcomposer.org/download/](https://getcomposer.org/download/)
+
+2. Laravel installé
+
+   * Installation : [https://laravel.com/docs/10.x/installation](https://laravel.com/docs/10.x/installation)
+3. Node.js installé
+
+   * Installation : [https://nodejs.org/en/download](https://nodejs.org/en/download)
+
 
 Ensuite, vous pouvez cloner le dépôt Git.
 
