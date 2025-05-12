@@ -61,12 +61,20 @@ Une fois téléchargé, exécutez les commandes suivantes dans le terminal pour 
      ┌ Would you like to create it? ────────────────────────────────┐
      │ ● Yes / ○ No        
      ```
+
 7. Remplir la base de données de la première histoire :
 
     ```bash
     php artisan db:seed --class=Story1Seeder
     ```
-
+8. (Optionnel) Ajouter un utilisateur par défaut :
+   ```bash
+    php artisan db:seed
+    ```
+   **Informations de connection :**
+   Email : test@example.com
+   Mot de passe : password
+   
 ## Lancer le projet
 
 Pour développer le projet en local, exécutez les commandes suivantes, chacune dans un terminal différent:
