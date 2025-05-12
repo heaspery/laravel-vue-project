@@ -1,13 +1,28 @@
 <script setup>
 import { ref, onMounted } from 'vue';
 import { Head } from '@inertiajs/vue3';
+import PrimaryButton from '@/Components/PrimaryButton.vue';
 
-const chapterId = ref();
+const chapterId = ref(null);
 const currentChapter = ref(null);
 const choices = ref([]);
 
 const props = defineProps({
     story: Object,  
+});
+
+onMounted(async () => {
+    const progress = await getProgress();
+
+    if (progress) {
+        chapterId.value = progress;
+    } else {
+        chapterId.value = 1;
+    }
+
+    currentChapter.value = await fetchChapter(chapterId.value);
+    choices.value = await fetchChoices(currentChapter.value.id);
+
 });
 
 
@@ -39,20 +54,6 @@ async function startOver(){
     await setProgress(1);
 }
 
-onMounted(async () => {
-    const progress = await getProgress();
-
-    if (progress) {
-        chapterId.value = progress;
-    } else {
-        chapterId.value = 1;
-    }
-
-    currentChapter.value = await fetchChapter(chapterId.value);
-    choices.value = await fetchChoices(currentChapter.value.id);
-
-});
-
 async function getProgress() {
     const progress = localStorage.getItem(`progres${props.story.id}`);
     if (progress) {
@@ -67,7 +68,6 @@ async function setProgress(chapterId) {
 }
 
 </script>
-
 
 
 <template>
@@ -92,6 +92,6 @@ async function setProgress(chapterId) {
     </div>
     <div v-else class="p-6">
         <h2>Fin de l'histoire</h2>
-        <button @click="startOver()">Recommencer</button>
+        <PrimaryButton @click="startOver()">Recommencer</PrimaryButton>
     </div>
 </template>

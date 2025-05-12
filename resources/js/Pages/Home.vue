@@ -27,6 +27,8 @@ import PrimaryButton from '@/Components/PrimaryButton.vue';
         Alors ne tardez pas plus, et démarrez une nouvelle aventure !
       </p>
     </div>
+    <a href="./dashboard">
    <PrimaryButton>Commencer un histoire</PrimaryButton>
+  </a>
   </div>
 </template>

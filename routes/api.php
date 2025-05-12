@@ -5,7 +5,6 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ChapterAPIController;
 use App\Http\Controllers\ChoiceAPIController;
 use App\Http\Controllers\StoryAPIController;
-use App\Http\Controllers\GameHistoryAPIController;
 
 
 //Vous constaterez que j'ai fait une bon nombre de routes pour le moment inutilisées, 
@@ -35,6 +34,11 @@ Route::get('/stories/{id}', [StoryAPIController::class, 'getStory']);
 //Route::post('/stories', [StoryAPIController::class, 'createStory']);
 //Route::put('/stories/{id}', [StoryAPIController::class, 'updateStory']);
 //Route::delete('/stories/{id}', [StoryAPIController::class, 'deleteStory']);
+
+
+//Je n'ai pas eu le temps d'implémenter la sauvegarde de progression côté backend. 
+//Pour le moment, elle est fait côté front en local storage. Mais la table Game History serait
+//faite pour cela.
 
 //Game History API Routes
 
