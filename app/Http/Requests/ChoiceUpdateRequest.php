@@ -22,7 +22,7 @@ class ChoiceUpdateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'content' => ['sometimes', 'string'],
+            'content' => ['sometimes', 'string', 'max:500'],
             'chapter_id' => ['sometimes', 'exists:chapters,id'],
             'next_chapter_id' => ['sometimes', 'exists:chapters,id'],
         ];

@@ -22,7 +22,7 @@ class ChoiceStoreRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'content' => ['required', 'string'],
+            'content' => ['required', 'string', 'max:500'],
             'next_chapter_id' => ['required', 'exists:chapters,id'],
             'chapter_id' => ['required', 'exists:chapters,id'],
         ];

@@ -22,10 +22,10 @@ class StoryUpdateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'title' => ['sometimes', 'string'],
-            'description' => ['sometimes', 'string'],
-            'author' => ['sometimes', 'string'],
-            'cover_image' => ['sometimes', 'string'],
+            'title' => ['sometimes', 'string', 'max:255'],
+            'description' => ['sometimes', 'string', 'max:500'],
+            'author' => ['sometimes', 'string', 'max:100'],
+            'cover_image' => ['sometimes', 'string','max:100'],
         ];
     }
 }

@@ -22,10 +22,10 @@ class StoryStoreRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'title' => ['required', 'string'],
-            'description' => ['required', 'string'],
-            'cover_image' => ['required', 'string'],
-            'author' => ['required', 'string'],
+            'title' => ['required', 'string', 'max:255'],
+            'description' => ['required', 'string', 'max:500'],
+            'cover_image' => ['required', 'string', 'max:100'],
+            'author' => ['required', 'string', 'max:100'],
         ];
     }
 }

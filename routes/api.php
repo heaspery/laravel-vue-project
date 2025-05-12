@@ -37,7 +37,7 @@ Route::prefix('v1')->group(function () {
 
 
     //Je n'ai pas eu le temps d'implémenter la sauvegarde de progression côté backend. 
-    //Pour le moment, elle est fait côté front en local storage. Mais la table Game History serait
+    //Pour le moment, elle est fait côté front dans le local storage. Mais la table Game History serait
     //faite pour cela.
 
     //Game History API Routes

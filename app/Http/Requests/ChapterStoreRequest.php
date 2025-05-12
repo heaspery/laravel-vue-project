@@ -22,10 +22,10 @@ class ChapterStoreRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'story_id' => 'required|exists:stories,id',
-            'title' => 'required|string',
-            'content' => 'required|string',
-            'image' => 'required|string',
+            'title' => ['required', 'string', 'max:255'],
+            'content' => ['required', 'string', 'max:1000'],
+            'story_id' => ['required', 'exists:stories,id'],
+            'image' => ['required', 'nullable', 'max:100'],
         ];
     }
 }
