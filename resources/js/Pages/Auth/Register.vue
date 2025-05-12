@@ -6,7 +6,7 @@ import PrimaryButton from '@/Components/PrimaryButton.vue';
 import TextInput from '@/Components/TextInput.vue';
 import TheTitle from '@/Components/TheTitle.vue';
 
-import { Head, Link, useForm } from '@inertiajs/vue3';
+import { Head, useForm } from '@inertiajs/vue3';
 
 const form = useForm({
     name: '',
@@ -24,8 +24,7 @@ const submit = () => {
 
 <template>
     <GuestLayout>
-        <Head title="Register" />
-
+        <Head title="S'inscrire" />
 
         <form @submit.prevent="submit">
             <TheTitle>S'inscrire</TheTitle> 
